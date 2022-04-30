@@ -1,0 +1,18 @@
+// 用户指令
+syntax = "proto3";
+package Cmd.ID;
+
+enum CMD
+{
+	// 无效的CMD
+	CMD_INVALID                           = 0xFFFF;
+	
+    ////////// 系统相关协议 //////////
+
+    // 心跳
+    CMD_HEART_BEAT_REQ                    = 0x1000;
+    CMD_HEART_BEAT_RSP                    = 0x1001;
+
+}
+
+

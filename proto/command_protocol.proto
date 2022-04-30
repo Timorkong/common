@@ -1,0 +1,13 @@
+syntax = "proto3";
+// 用户指令
+package PROTOCOL;
+
+message CMD_HEART_BEAT_REQ{
+    optional int32 id = 1;//
+}
+
+message CMD_HEART_BEAT_RSP{
+    optional int32 id = 1;//
+}
+
+
