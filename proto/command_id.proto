@@ -10,8 +10,20 @@ enum CMD
     ////////// 系统相关协议 //////////
 
     // 心跳
-    CMD_HEART_BEAT_REQ                    = 0x1000;
-    CMD_HEART_BEAT_RSP                    = 0x1001;
+    CMD_HEART_BEAT_REQ                    = 1000;
+    CMD_HEART_BEAT_RSP                    = 1001;
+    //=====================房间========================
+    //创建房间
+    CMD_CREATE_ROOM_REQ                     = 1002;
+    CMD_CREATE_ROOM_RSP                     = 1003;
+    //离开房间
+    CMD_LEAVE_ROOM_REQ                     = 1004;
+    CMD_LEAVE_ROOM_RSP                     = 1005;
+    CMD_LEAVE_ROOM_NOTICE                  = 1006;
+    //获取房间列表
+    CMD_ROOM_LIST_REQ                     = 1007;
+    CMD_ROOM_LIST_RSP                     = 1008;
+    //=====================房间========================
 }
 
 
