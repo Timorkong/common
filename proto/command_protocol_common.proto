@@ -1,0 +1,12 @@
+syntax = "proto3";
+// 用户指令
+package PROTOCOL_COMMON;
+
+message UserInfo{
+    optional string user_name = 1;
+}
+
+message RoomInfo{
+    optional string room_name = 1;
+    repeated UserInfo user_list = 2;
+}

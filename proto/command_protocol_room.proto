@@ -1,22 +1,14 @@
 syntax = "proto3";
+import public "command_protocol_common.proto";
 // 用户指令
 package PROTOCOL_ROOM;
-
-message UserInfo{
-    optional string user_name = 1;
-}
-
-message RoomInfo{
-    optional string room_name = 1;
-    repeated UserInfo user_list = 2;
-}
 
 message CMD_ROOM_LIST_REQ{
     
 }
 
 message CMD_ROOM_LIST_RSP{
-    repeated RoomInfo room_list = 1;
+    repeated PROTOCOL_COMMON.RoomInfo room_list = 1;
 }
 
 //创建房间
@@ -25,7 +17,7 @@ message CMD_CREATE_ROOM_REQ{
 }
 
 message CMD_CREATE_ROOM_RSP{
-    optional RoomInfo room_info = 1;
+    optional PROTOCOL_COMMON.RoomInfo room_info = 1;
 }
 
 //离开房间
@@ -33,11 +25,10 @@ message CMD_LEAVE_ROOM_REQ{
 }
 
 message CMD_LEAVE_ROOM_RSP{
-    repeated RoomInfo room_list = 1;
+    repeated PROTOCOL_COMMON.RoomInfo room_list = 1;
 }
 //离开房间通知其他玩家
 message CMD_LEAVE_ROOM_NOTICE{
-     optional RoomInfo room_info = 1;
+     optional PROTOCOL_COMMON.RoomInfo room_info = 1;
 }
-
 

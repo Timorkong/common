@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package PROTOCOL_WAR;
+//开始游戏
+message CMD_ENTER_GAME_REQ{
+}
+
+message CMD_ENTER_GAME_RSP{
+}
+//场景加载完毕
+message CMD_START_GAME_REQ{
+}
+
+message CMD_START_GAME_RSP{
+}
+//战斗移动
+message CMD_WAR_MOVE_REQ{
+    optional bool is_down       = 1;
+    optional int32 degree       = 2;
+}
+//战斗移动
+message CMD_WAR_MOVE_RSP{
+    //位置
+    optional int32 seat         = 1;
+    //是否按下
+    optional bool is_down       = 2;
+    //移动角度
+    optional int32 degree       = 3;
+}
+
+//战斗帧消息
+message CMD_WAR_COMMAND_NOTICE{
+    //服务器帧
+    optional int32 sequence         = 1;
+    //角色命令
+    optional bytes commands         = 2;
+}
+
+
