@@ -5,38 +5,49 @@ package Cmd.ID;
 enum CMD
 {
 	// 无效的CMD
-	CMD_INVALID                           = 0;
+	CMD_INVALID                             = 0;
 	
     ////////// 系统相关协议 //////////
 
     // 心跳
-    CMD_HEART_BEAT_REQ                    = 1000;
-    CMD_HEART_BEAT_RSP                    = 1001;
+    CMD_HEART_BEAT_REQ                      = 1000;
+    CMD_HEART_BEAT_RSP                      = 1001;
     //=====================房间========================
     //创建房间
-    CMD_CREATE_ROOM_REQ                     = 1002;
-    CMD_CREATE_ROOM_RSP                     = 1003;
+    CMD_CREATE_ROOM_REQ                     = 2000;
+    CMD_CREATE_ROOM_RSP                     = 2001;
     //离开房间
-    CMD_LEAVE_ROOM_REQ                     = 1004;
-    CMD_LEAVE_ROOM_RSP                     = 1005;
-    CMD_LEAVE_ROOM_NOTICE                  = 1006;
+    CMD_LEAVE_ROOM_REQ                      = 2002;
+    CMD_LEAVE_ROOM_RSP                      = 2003;
+    //房间信息更新，有人加入，有人离开
+    CMD_UPDATE_ROOM_INFO_NOTICE             = 2004;
     //获取房间列表
-    CMD_ROOM_LIST_REQ                     = 1007;
-    CMD_ROOM_LIST_RSP                     = 1008;
+    CMD_ROOM_LIST_REQ                       = 2005;
+    CMD_ROOM_LIST_RSP                       = 2006;
+    //加入房间
+    CMD_JOIN_ROOM_REQ                       = 2007;
+    CMD_JOIN_ROOM_RSP                       = 2008;
     //=====================房间========================
     //=====================战斗========================
     //进入游戏
-    CMD_ENTER_GAME_REQ                     = 1009;
-    CMD_ENTER_GAME_RSP                     = 1010;
+    CMD_ENTER_GAME_REQ                      = 3000;
+    CMD_ENTER_GAME_RSP                      = 3001;
     //资源加载完毕，开始游戏
-    CMD_START_GAME_REQ                     = 1011;
-    CMD_START_GAME_RSP                     = 1012;
-    //移动请求
-    CMD_WAR_MOVE_REQ                       = 1013;
-    CMD_WAR_MOVE_RSP                       = 1014;
-    //战斗帧命令
-    CMD_WAR_COMMAND_NOTICE                 = 1015;
+    CMD_START_GAME_REQ                      = 3002;
+    CMD_START_GAME_RSP                      = 3003;
     //=====================战斗========================
+    //=====================帧同步信息========================
+    //帧数据同步最小值
+    CMD_FRAME_SYNC_MIN                      = 10000;
+    //帧转发函数
+    CMD_FRAME_TRANSPOND                     = 10001;
+    //同步帧信息
+    CMD_WAR_SEQUENCE_NOTICE                 = 10002;
+    //移动请求
+    CMD_WAR_MOVE                            = 10003;
+    //帧同步最大值
+    CMD_FRAME_SYNC_MAX                      = 20000;
+    //=====================帧同步信息========================
 }
 
 

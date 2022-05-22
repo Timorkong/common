@@ -17,7 +17,8 @@ message CMD_CREATE_ROOM_REQ{
 }
 
 message CMD_CREATE_ROOM_RSP{
-    optional PROTOCOL_COMMON.RoomInfo room_info = 1;
+    optional int32 player_seat = 1;
+    optional PROTOCOL_COMMON.RoomInfo room_info = 2;
 }
 
 //离开房间
@@ -28,7 +29,16 @@ message CMD_LEAVE_ROOM_RSP{
     repeated PROTOCOL_COMMON.RoomInfo room_list = 1;
 }
 //离开房间通知其他玩家
-message CMD_LEAVE_ROOM_NOTICE{
+message CMD_UPDATE_ROOM_INFO_NOTICE{
      optional PROTOCOL_COMMON.RoomInfo room_info = 1;
+}
+//加入房间
+message CMD_JOIN_ROOM_REQ{
+    optional int32 room_unquie_id = 1;
+}
+
+message CMD_JOIN_ROOM_RSP{
+    optional int32 player_seat = 1;
+    optional PROTOCOL_COMMON.RoomInfo room_info = 2;
 }
 
