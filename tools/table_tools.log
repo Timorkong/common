@@ -1,0 +1,14 @@
+2022-06-07 11:02:38|SYS|run.py|<module>|Line.348
+reset log
+2022-06-07 11:02:38|INFO|run.py|<module>|Line.353
+ready type=Client
+2022-06-07 11:02:38|INFO|run.py|run_async|Line.279
+before que_table_path.join
+2022-06-07 11:02:38|INFO|run.py|run_async|Line.281
+after que_table_path.join
+2022-06-07 11:02:41|INFO|run.py|run_async|Line.316
+before que_to_data.join
+2022-06-07 11:02:41|INFO|run.py|run_async|Line.318
+after que_to_data.join
+2022-06-07 11:02:41|INFO|run.py|out_time|Line.326
+完成 用时:2.5245087146759033

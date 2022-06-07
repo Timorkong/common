@@ -1,0 +1,38 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "table_write",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}\\tools\\table_writer.py",
+            "console": "integratedTerminal",
+            "args": [
+                "-s 0 -p c_table_Avatar -m AVATAR -o c_table_AVATAR Avatar",
+            ]
+        },
+        {
+            "name": "打表_只改内容",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}\\tools\\run.py",
+            "console": "integratedTerminal",
+            "args": [
+                "type-client^only_byte-1",
+            ]
+        },
+        {
+            "name": "打表_改了结构",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceRoot}\\tools\\run.py",
+            "console": "integratedTerminal",
+            "args": [
+                "type-client",
+            ]
+        }
+    ]
+}
