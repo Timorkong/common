@@ -35,7 +35,9 @@ class Config(object):
         根据proto文件生成python文件\n
         proto_name proto文件名称（不带后缀）
         """
-        ret = Config.execute_shell_command(['protoc', '-I.', '--python_out=.', '{}.proto'.format(proto_name)], 'T')
+        # ret = Config.execute_shell_command(['protoc', '-I.', '--python_out=.', '{}.proto'.format(proto_name)], 'T')
+        cmd = 'protoc -I. --python_out=. {0}*.proto'.format(proto_name)
+        ret = Config.excute_shell_command_system(cmd)
         return ret
     
     @classmethod
