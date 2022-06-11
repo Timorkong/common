@@ -41,10 +41,10 @@ class Logger(object):
     COLOR_YELLOW = 14  # yellow.
     COLOR_WHITE = 15  # white.
 
-    foregroundColor = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08\
-    , 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]
-    backgroundColor = [0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80\
-    , 0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xe0, 0xf0]
+    foregroundColor = [0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06,
+                       0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f]
+    backgroundColor = [0x00, 0x10, 0x20, 0x30, 0x40, 0x50, 0x60,
+                       0x70, 0x80, 0x90, 0xa0, 0xb0, 0xc0, 0xd0, 0xe0, 0xf0]
 
     def __init__(self, level=LEVEL_INFO, file_path='logger', to_screen=False):
         """
@@ -65,15 +65,16 @@ class Logger(object):
         if platform.system() == 'Darwin':  # Mac系统
             return
         std_out_handle = ctypes.windll.kernel32.GetStdHandle(-11)
-        ret = ctypes.windll.kernel32.SetConsoleTextAttribute(std_out_handle, color)
+        ret = ctypes.windll.kernel32.SetConsoleTextAttribute(
+            std_out_handle, color)
         return ret
 
     def __set_cmd_default_color__(self):
         """
         设置控制台默认颜色
         """
-        self.__set_cmd_color__(self.foregroundColor[self.COLOR_WHITE] | \
-        self.backgroundColor[self.COLOR_BLACK])
+        self.__set_cmd_color__(self.foregroundColor[self.COLOR_WHITE] |
+                               self.backgroundColor[self.COLOR_BLACK])
 
     def __log__(self, level, content, fore_color=COLOR_WHITE, back_color=COLOR_BLACK):
         """
@@ -87,12 +88,16 @@ class Logger(object):
         except:
             # f_back两次得到logger之外的调用者
             f = sys.exc_info()[2].tb_frame.f_back.f_back
-        caller_info = '{}|{}|Line.{}'.format(os.path.basename(f.f_code.co_filename), f.f_code.co_name, f.f_lineno)
+        f = sys.exc_info()[2].tb_frame.f_back.f_back
+        caller_info = '{}|{}|Line.{}'.format(os.path.basename(
+            f.f_code.co_filename), f.f_code.co_name, f.f_lineno)
 
-        log_info = '{}|{}|{}\n{}'.format(datetime.now().strftime('%Y-%m-%d %H:%M:%S'), level, caller_info, content)
-        
+        log_info = '{}|{}|{}\n{}'.format(datetime.now().strftime(
+            '%Y-%m-%d %H:%M:%S'), level, caller_info, content)
+
         if self.__to_screen__:
-            self.__set_cmd_color__(self.foregroundColor[fore_color] | self.backgroundColor[back_color])
+            self.__set_cmd_color__(
+                self.foregroundColor[fore_color] | self.backgroundColor[back_color])
             print(log_info)
             self.__set_cmd_default_color__()
 
@@ -116,7 +121,8 @@ class Logger(object):
         重置，日志备份，重新开始写
         """
         if os.path.exists(self.__file_path__ + '.log'):
-            shutil.copy(self.__file_path__ + '.log', self.__file_path__ + '-prev.log')
+            shutil.copy(self.__file_path__ + '.log',
+                        self.__file_path__ + '-prev.log')
             os.remove(self.__file_path__ + '.log')
         self.__log__('SYS', 'reset log')  # 增加一句系统LOG，避免LOG为空，监听文件没了，同时也好看有响应
 
