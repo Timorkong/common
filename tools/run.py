@@ -1,7 +1,6 @@
 # !/usr/bin/python
 # encoding=utf-8
 
-from jutil import JUtil
 import sys
 import os
 import threading
@@ -17,27 +16,22 @@ for x in more_path:
     p = os.path.join(os.path.dirname(sys.argv[0]), x)
     if os.path.exists(p):
         sys.path.append(p)
+from jutil import JUtil
+
 config = Config()
 logger = ''
-DEBUG_MODE = False  # Debug模式
-table_list = []  # 表格列表
-que_table_path = Queue()  # table excel file
-que_to_data = Queue()
-que_to_py = Queue()
-que_common_py = Queue()  # common proto file to gen python file
 
-DEBUG_MODE = False  # Debug模式
-table_list = []  # 表格列表
-que_table_path = Queue()  # table excel file
+DEBUG_MODE = False # Debug模式
+table_list = [] # 表格列表
+que_table_path = Queue() # table excel file
 que_to_data = Queue()
 que_to_py = Queue()
-que_common_py = Queue()  # common proto file to gen python file
+que_common_py = Queue() # common proto file to gen python file
 
 error_flag = False  # 是否有错误
 error_info = ''  # 错误信息
 
 myutil = JUtil()
-
 
 def set_error(info, to_log=True):
     """
@@ -51,19 +45,16 @@ def set_error(info, to_log=True):
     if to_log is True:
         logger.error(error_info)
 
-
 def check_error():
     """
     检查是否发生过错误
     """
     return error_flag
 
-
 class TaskInfo():
     def __init__(self, table, cur_use_type):
         self.table = table
         self.use_type = cur_use_type
-
 
 def usage():
     """
@@ -72,7 +63,6 @@ def usage():
     print('this is usage()')
     print('run_type-client.py')
     print('run.py type-client')
-
 
 def delete_file(path, pattern1, pattern2=''):
     """
@@ -91,7 +81,6 @@ def delete_file(path, pattern1, pattern2=''):
             else:
                 os.remove(file_path)
 
-
 def clean_proto(cur_use_type):
     """
     删除上次打过的proto文件
@@ -107,18 +96,14 @@ def clean_proto(cur_use_type):
         delete_file(config.proto_path, config.server_table_prefix, '.py')
         delete_file(config.proto_path, config.server_table_prefix, '.pyc')
 
-
 def clean_output(use_type):
     """
     清理输出
     """
     if use_type == MyTableTool.USE_TYPE_CLIENT:
-        delete_file(config.table_data_path, '.bytes',
-                    config.client_table_prefix)
+        delete_file(config.table_data_path, '.bytes', config.client_table_prefix)
     elif use_type == MyTableTool.USE_TYPE_SERVER:
-        delete_file(config.table_data_path, '.bytes',
-                    config.server_table_prefix)
-
+        delete_file(config.table_data_path, '.bytes', config.server_table_prefix)
 
 def find_common():
     """
@@ -130,30 +115,26 @@ def find_common():
             filename_without_extension = os.path.splitext(filename)[0]
             que_common_py.put(filename_without_extension)
 
-
 def find_tables():
     """
     查找表格
     """
-    table_list[:] = []  # 清空
+    table_list[:] = [] # 清空
     file_list = os.listdir(myutil.get_exe_path(config.table_path))
     for filename in file_list:
         if filename.find('.xls') != -1:
             if filename.startswith('~$') is True:  # 开着的临时文件
-                logger.warn('表格[' + filename.split('$', 1)
-                            [1] + ']是打开的, 做了修改不要忘记保存')
+                logger.warn('表格[' + filename.split('$', 1)[1] + ']是打开的, 做了修改不要忘记保存')
                 continue
             if filename.find(' - ') != -1:
                 # 有时候会复制一个表格前后对比，直接复制的名字是“XXX - 副本.xlsx”，做一下粗略过滤
                 continue
-            filepath = os.path.join(
-                myutil.get_exe_path(config.table_path), filename)
+            filepath = os.path.join(myutil.get_exe_path(config.table_path), filename)
             table = MyTable(filepath, myutil.get_exe_path('./'))
             table_list.append(table)
             que_table_path.put(table)
             if DEBUG_MODE:
                 logger.info('pack:' + filename)
-
 
 class ThreadHandleCommon:
     F_GEN_PROTO_PY = 0  # 生成python文件
@@ -167,8 +148,7 @@ class ThreadHandleCommon:
         try:
             self.run2()
         except Exception as e:
-            logger.error("ThreadHandleCommon: {}, {}".format(
-                e, traceback.format_exc()))
+            logger.error("ThreadHandleCommon: {}, {}".format(e, traceback.format_exc()))
             raise
 
     def run2(self):
@@ -181,7 +161,6 @@ class ThreadHandleCommon:
                 self.que.task_done()
                 if ret.returncode != 0:
                     set_error('generate_proto_py_file:\n' + ret.stderr)
-
 
 class ThreadHandleTable:
     F_PROTO = 0  # 生成proto文件
@@ -199,8 +178,7 @@ class ThreadHandleTable:
         try:
             self.run2()
         except Exception as e:
-            logger.error("ThreadHandleTable: {}, {}".format(
-                e, traceback.format_exc()))
+            logger.error("ThreadHandleTable: {}, {}".format(e, traceback.format_exc()))
 
     def run2(self):
         while True:
@@ -217,17 +195,13 @@ class ThreadHandleTable:
                             table.to_proto(MyTableTool.USE_TYPE_SERVER)
 
                         if self.use_type == MyTableTool.USE_TYPE_CLIENT:
-                            que_to_py.put(
-                                TaskInfo(table, MyTableTool.USE_TYPE_CLIENT))
+                            que_to_py.put(TaskInfo(table, MyTableTool.USE_TYPE_CLIENT))
                         elif self.use_type == MyTableTool.USE_TYPE_SERVER:
-                            que_to_py.put(
-                                TaskInfo(table, MyTableTool.USE_TYPE_SERVER))
+                            que_to_py.put(TaskInfo(table, MyTableTool.USE_TYPE_SERVER))
                     if self.use_type == MyTableTool.USE_TYPE_CLIENT:
-                        que_to_data.put(
-                            TaskInfo(table, MyTableTool.USE_TYPE_CLIENT))
+                        que_to_data.put(TaskInfo(table, MyTableTool.USE_TYPE_CLIENT))
                     elif self.use_type == MyTableTool.USE_TYPE_SERVER:
-                        que_to_data.put(
-                            TaskInfo(table, MyTableTool.USE_TYPE_SERVER))
+                        que_to_data.put(TaskInfo(table, MyTableTool.USE_TYPE_SERVER))
                 self.que.task_done()
             elif self.flag == self.F_PYTHON:
                 data = self.que.get()
@@ -236,8 +210,7 @@ class ThreadHandleTable:
                     table_prefix = config.client_table_prefix
                 else:
                     table_prefix = config.server_table_prefix
-                ret = Config.generate_proto_py_file(
-                    '{}{}'.format(table_prefix, data.table.name))
+                ret = Config.generate_proto_py_file('{}{}'.format(table_prefix, data.table.name))
                 self.que.task_done()
                 if ret.returncode != 0:
                     set_error('generate_proto_py_file:\n' + str(ret.stderr))
@@ -250,7 +223,6 @@ class ThreadHandleTable:
                         set_error('error', False)
             else:
                 continue
-
 
 def run_async(cur_use_type, only_byte):
     """
@@ -280,8 +252,7 @@ def run_async(cur_use_type, only_byte):
     if not only_byte:
         os.chdir(myutil.get_exe_path(config.proto_path))
         enter_cwd_dir = os.getcwd()
-        t = ThreadHandleCommon(
-            que_common_py, ThreadHandleCommon.F_GEN_PROTO_PY)
+        t = ThreadHandleCommon(que_common_py, ThreadHandleCommon.F_GEN_PROTO_PY)
         t.run()
         # for i in range(thread_cnt2):
         #     t = ThreadHandleCommon(que_common_py, ThreadHandleCommon.F_GEN_PROTO_PY)
@@ -299,8 +270,7 @@ def run_async(cur_use_type, only_byte):
     # gen table proto
     os.chdir(work_path)
     enter_cwd_dir = os.getcwd()
-    t = ThreadHandleTable(
-        cur_use_type, ThreadHandleTable.F_PROTO, que_table_path, only_byte)
+    t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_PROTO, que_table_path, only_byte)
     t.run()
     # for i in range(thread_cnt):
     #     t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_PROTO, que_table_path, only_byte)
@@ -315,8 +285,7 @@ def run_async(cur_use_type, only_byte):
     # gen table py, gen cs
     os.chdir(myutil.get_exe_path(config.proto_path))
     if only_byte is False:
-        t = ThreadHandleTable(
-            cur_use_type, ThreadHandleTable.F_PYTHON, que_to_py, only_byte)
+        t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_PYTHON, que_to_py, only_byte)
         t.run()
         # for i in range(thread_cnt):
         #     t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_PYTHON, que_to_py, only_byte)
@@ -327,34 +296,17 @@ def run_async(cur_use_type, only_byte):
         logger.info("after que_to_py.join")
         if check_error():
             return
-        # gen common cs
-        ret = Config.generate_cs_file(
-            config.table_cs_path, config.common_prefix)
+        ret = Config.generate_cs_file(config.table_cs_path, config.common_prefix)
+        ret = Config.generate_cs_file(config.table_cs_path, config.client_table_prefix)
         if ret.returncode != 0:
-            set_error('generate_common_cs_file:\n' + str(ret.stderr))
-        if check_error():
-            return
-        # gen table cs
-        ret = Config.generate_cs_file(
-            config.table_cs_path, config.client_table_prefix)
-        if ret.returncode != 0:
-            set_error('generate_table_cs_file:\n' + str(ret.stderr))
-        if check_error():
-            return
-        # gen command cs
-        os.chdir(myutil.get_exe_path(config.proto_command_path))
-        ret = Config.generate_cs_file(
-            config.command_cs_path, config.command_prefix)
-        if ret.returncode != 0:
-            set_error('generate_command_cs_file:\n' + str(ret.stderr))
+            set_error('generate_cs_file:\n' + str(ret.stderr))
         if check_error():
             return
 
     # gen table data
     os.chdir(work_path)
     enter_cwd_dir = os.getcwd()
-    t = ThreadHandleTable(
-        cur_use_type, ThreadHandleTable.F_BYTE, que_to_data, only_byte)
+    t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_BYTE, que_to_data, only_byte)
     t.run()
     # for i in range(thread_cnt):
     #     t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_BYTE, que_to_data, only_byte)
@@ -367,13 +319,11 @@ def run_async(cur_use_type, only_byte):
     if check_error():
         return
 
-
 def out_time(des):
     """
     输出运行时间
     """
     logger.info('{} 用时:{}'.format(des, time.time() - start_time))
-
 
 if __name__ == '__main__':
     start_time = time.time()  # 运行开始时间，用来计算耗时

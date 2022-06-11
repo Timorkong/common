@@ -18,7 +18,7 @@
             "name": "打表_只改内容",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceRoot}/tools/run.py",
+            "program": "${workspaceRoot}\\tools\\run.py",
             "console": "integratedTerminal",
             "args": [
                 "type-client^only_byte-1",
@@ -28,7 +28,7 @@
             "name": "打表_改了结构",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceRoot}/tools/run.py",
+            "program": "${workspaceRoot}\\tools\\run.py",
             "console": "integratedTerminal",
             "args": [
                 "type-client",

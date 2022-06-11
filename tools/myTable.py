@@ -110,8 +110,7 @@ class MyType(object):
                 elif line == 'enum {}'.format(type_name):
                     for j in range(i + 1, text_len):
                         if text[j].find('=') != -1:
-                            ret.default_val = Util.strip_notes_spaces_tab(
-                                text[j].split('=')[0])
+                            ret.default_val = Util.strip_notes_spaces_tab(text[j].split('=')[0])
                             break
                     ret.type = MyType.TYPE_USER
                     ret.package = filename
@@ -139,7 +138,7 @@ class MyTableTool(object):
         """
         数据转unicode，并且去除换行
         """
-        # if type(data) == str:
+        #if type(data) == str:
         #    data = data.decode('utf8')
         # 部分Excel会让字段带有换行，这里不判是否字符串类型
         data = data.replace(chr(13), '')
@@ -183,14 +182,12 @@ class MyTableTool(object):
             return 'None'
         return 'None'
 
-
 class MyTableColumn(object):
     def __init__(self, column_data, column_idx):
         self.use_type = MyTableTool.USE_TYPE_NONE
         if len(column_data) < 4:
             return
-        self.use_type = MyTableTool.get_use_type(
-            MyTableTool.to_unicode(column_data[2]))
+        self.use_type = MyTableTool.get_use_type(MyTableTool.to_unicode(column_data[2]))
         if self.use_type == MyTableTool.USE_TYPE_NONE:
             return
         self.idx = column_idx  # 在第几列，从1开始计数
@@ -259,7 +256,7 @@ class MyTableSheet(object):
             return
         self.idx = sheet_idx
         self.name = excel_sheet.name.split('_', 1)[1]
-        self.columns: list[MyTableColumn] = []
+        self.columns : list[MyTableColumn] = []
 
         idx = 0  # none的列也要给索引值，不然打成二进制的时候对不上
         for i in range(excel_sheet.ncols):
@@ -308,22 +305,19 @@ class MyTableSheet(object):
         file_handler.write('    repeated {} rows = 1;\n'.format(self.name))
         file_handler.write('}\n')
 
-
 class MyTable(object):
     def __init__(self, excel_path, path_dir1):
         global run_path_dir
         run_path_dir = path_dir1
-        logger.set_config(Logger.LEVEL_INFO, os.path.join(
-            run_path_dir, './table_tools'))
+        logger.set_config(Logger.LEVEL_INFO, os.path.join(run_path_dir, './table_tools'))
         config.table_path = os.path.join(run_path_dir, config.table_path)
         config.proto_path = os.path.join(run_path_dir, config.proto_path)
-        config.table_data_path = os.path.join(
-            run_path_dir, config.table_data_path)
+        config.table_data_path = os.path.join(run_path_dir, config.table_data_path)
 
         self.excel_path = excel_path
         self.name = os.path.splitext(os.path.basename(excel_path))[0]
-        self.sheets: list[MyTableSheet] = []
-
+        self.sheets : list[MyTableSheet] = []
+        
         try:
             data = xlrd.open_workbook(excel_path)
             for i in range(len(data.sheets())):
@@ -333,7 +327,7 @@ class MyTable(object):
                 self.sheets.append(sheet)
         except Exception as e:
             print(e)
-
+       
     def proto_name(self):
         """
         proto名称
@@ -433,11 +427,11 @@ class MyTable(object):
         for sheet in self.sheets:
             if sheet.use_type == use_type:
                 cmd = 'python3 {} -s {} -p {} -m {} -o {} {}'.format(os.path.join(run_path_dir, './table_writer.py'),
-                                                                     sheet.idx,
-                                                                     table_prefix + self.name,
-                                                                     sheet.name,
-                                                                     table_prefix + sheet.name,
-                                                                     self.name)
+                                       sheet.idx,
+                                       table_prefix + self.name,
+                                       sheet.name,
+                                       table_prefix + sheet.name,
+                                       self.name)
                 ret = os.system('python3 {} -s {} -p {} -m {} -o {} {}'.
                                 format(os.path.join(run_path_dir, './table_writer.py'),
                                        sheet.idx,
@@ -446,7 +440,6 @@ class MyTable(object):
                                        table_prefix + sheet.name,
                                        self.name))
                 if ret != 0:
-                    logger.error('打表出错 : 表格文件:{} 页签:{}，详情见上一条日志'.format(
-                        self.name, sheet.name))
+                    logger.error('打表出错 : 表格文件:{} 页签:{}，详情见上一条日志'.format(self.name, sheet.name))
                     return False
         return True
