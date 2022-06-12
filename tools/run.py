@@ -282,7 +282,7 @@ def run_async(cur_use_type, only_byte):
     if check_error():
         return
 
-    # gen table py, gen cs
+    # gen common cs
     os.chdir(myutil.get_exe_path(config.proto_path))
     if only_byte is False:
         t = ThreadHandleTable(cur_use_type, ThreadHandleTable.F_PYTHON, que_to_py, only_byte)
@@ -297,9 +297,21 @@ def run_async(cur_use_type, only_byte):
         if check_error():
             return
         ret = Config.generate_cs_file(config.table_cs_path, config.common_prefix)
+        if ret.returncode != 0:
+            set_error('generate_common_cs_file:\n' + str(ret.stderr))
+        if check_error():
+            return
+        # gen table cs
         ret = Config.generate_cs_file(config.table_cs_path, config.client_table_prefix)
         if ret.returncode != 0:
-            set_error('generate_cs_file:\n' + str(ret.stderr))
+            set_error('generate_table_cs_file:\n' + str(ret.stderr))
+        if check_error():
+            return
+        # gen command cs
+        os.chdir(myutil.get_exe_path(config.proto_command_path))
+        ret = Config.generate_cs_file(config.command_cs_path, config.command_prefix)
+        if ret.returncode != 0:
+            set_error('generate_command_cs_file:\n' + str(ret.stderr))
         if check_error():
             return
 
@@ -355,8 +367,10 @@ if __name__ == '__main__':
     path_dir = myutil.get_exe_path('./')
     config.table_path = os.path.join(path_dir, config.table_path)
     config.proto_path = os.path.join(path_dir, config.proto_path)
+    config.proto_command_path = os.path.join(path_dir, config.proto_command_path)
     config.table_data_path = os.path.join(path_dir, config.table_data_path)
     config.table_cs_path = os.path.join(path_dir, config.table_cs_path)
+    config.command_cs_path = os.path.join(path_dir, config.command_cs_path)
 
     if not only_byte:
         clean_proto(use_type)

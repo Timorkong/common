@@ -313,6 +313,7 @@ class MyTable(object):
         config.table_path = os.path.join(run_path_dir, config.table_path)
         config.proto_path = os.path.join(run_path_dir, config.proto_path)
         config.table_data_path = os.path.join(run_path_dir, config.table_data_path)
+        config.proto_command_path = os.path.join(run_path_dir, config.proto_command_path)
 
         self.excel_path = excel_path
         self.name = os.path.splitext(os.path.basename(excel_path))[0]
