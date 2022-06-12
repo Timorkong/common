@@ -1,32 +1,32 @@
 syntax = "proto3";
 import public "command_protocol_common.proto";
-package PROTOCOL_WAR;
+package PROTOCOLWAR;
 //进入游戏
-message CMD_ENTER_GAME_REQ{
-    optional PROTOCOL_COMMON.pre_battle_data data   = 1;
+message EnterGameReq{
+    optional PROTOCOLCOMMON.PreBattleData Data   = 1;
 }
 
-message CMD_ENTER_GAME_RSP{
-     optional PROTOCOL_COMMON.pre_battle_data data  = 1;
+message EnterGameRsp{
+     optional PROTOCOLCOMMON.PreBattleData Data  = 1;
 }
 //场景加载完毕
-message CMD_START_GAME_REQ{
+message StartGameReq{
 }
 
-message CMD_START_GAME_RSP{
-    optional PROTOCOL_COMMON.RoomInfo room_info = 1;
+message StartGameRsp{
+    optional PROTOCOLCOMMON.RoomInfo RoomInfo = 1;
 }
 //战斗移动
-message CMD_WAR_MOVE{
+message WarMove{
     //位置
-    optional int32 seat         = 1;
-    optional float move_x       = 2;
-    optional float move_y       = 3;
+    optional int32 Seat        = 1;
+    optional float MoveX       = 2;
+    optional float MoveY       = 3;
 }
 
 //服务器下发同步帧
-message CMD_WAR_SEQUENCE_NOTICE{
-    optional int32 sequence = 1;
+message WarSequenceNotice{
+    optional int32 Sequence = 1;
 }
 
 

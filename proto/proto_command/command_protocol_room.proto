@@ -1,44 +1,43 @@
 syntax = "proto3";
 import public "command_protocol_common.proto";
 // 用户指令
-package PROTOCOL_ROOM;
+package PROTOCOLROOM;
 
-message CMD_ROOM_LIST_REQ{
+message RoomListReq{
     
 }
 
-message CMD_ROOM_LIST_RSP{
-    repeated PROTOCOL_COMMON.RoomInfo room_list = 1;
+message RoomListRsp{
+    repeated PROTOCOLCOMMON.RoomInfo RoomList = 1;
 }
 
 //创建房间
-message CMD_CREATE_ROOM_REQ{
-    optional string room_name = 1;
+message CreateRoomReq{
+    optional string RoomName = 1;
 }
 
-message CMD_CREATE_ROOM_RSP{
-    optional int32 player_seat = 1;
-    optional PROTOCOL_COMMON.RoomInfo room_info = 2;
+message CreateRoomRsp{
+    optional int32 PlayerSeat = 1;
+    optional PROTOCOLCOMMON.RoomInfo RoomInfo = 2;
 }
 
 //离开房间
-message CMD_LEAVE_ROOM_REQ{
+message LeaveRoomReq{
 }
 
-message CMD_LEAVE_ROOM_RSP{
-    repeated PROTOCOL_COMMON.RoomInfo room_list = 1;
+message LeaveRoomRsp{
+    repeated PROTOCOLCOMMON.RoomInfo RoomList = 1;
 }
 //离开房间通知其他玩家
-message CMD_UPDATE_ROOM_INFO_NOTICE{
-     optional PROTOCOL_COMMON.RoomInfo room_info = 1;
+message UpdateRoomInfoNotice{
+     optional PROTOCOLCOMMON.RoomInfo RoomInfo = 1;
 }
 //加入房间
-message CMD_JOIN_ROOM_REQ{
-    optional int32 room_unquie_id = 1;
+message JoinRoomReq{
+    optional int32 RoomUnquieId = 1;
 }
 
-message CMD_JOIN_ROOM_RSP{
-    optional int32 player_seat = 1;
-    optional PROTOCOL_COMMON.RoomInfo room_info = 2;
+message JoinRoomRsp{
+    optional int32 PlayerSeat = 1;
+    optional PROTOCOLCOMMON.RoomInfo RoomInfo = 2;
 }
-

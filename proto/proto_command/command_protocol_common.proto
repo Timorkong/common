@@ -1,18 +1,18 @@
 syntax = "proto3";
 // 用户指令
-package PROTOCOL_COMMON;
+package PROTOCOLCOMMON;
 
 message UserInfo{
-    optional string user_name = 1;
-    optional int32 user_seat = 2;
+    optional string UserName = 1;
+    optional int32 UserSeat = 2;
 }
 
 message RoomInfo{
-    optional string room_name = 1;
-    repeated UserInfo user_list = 2;
-    optional int32  room_unique_id = 3;
+    optional string RoomName = 1;
+    repeated UserInfo UserList = 2;
+    optional int32  RoomUniqueId = 3;
 }
 
-message pre_battle_data{
-    optional string level_name = 1;
+message PreBattleData{
+    optional string LevelName = 1;
 }

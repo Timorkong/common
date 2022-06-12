@@ -2,12 +2,12 @@ syntax = "proto3";
 // 用户指令
 package PROTOCOL;
 
-message CMD_HEART_BEAT_REQ{
-    optional int32 id = 1;//
-    optional string name = 2;
+message HeartBeatReq{
+    optional int32 Id = 1;//
+    optional string Name = 2;
 }
 
-message CMD_HEART_BEAT_RSP{
-    optional int32 id = 1;
-    optional string name = 2;
+message HeartBeatRsp{
+    optional int32 Id = 1;
+    optional string Name = 2;
 }
